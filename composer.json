@@ -1,0 +1,31 @@
+{
+    "name": "SKumar/WpnonceOops",
+    "description": "Wordpress nonce functions implemented in object oriented way",
+    "type": "library",
+    "license": "GPL-2.0+",
+    "authors": [
+        {
+            "name": "Satish Kumar",
+            "email": "satish.prg@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "php": ">=7.0.0"
+    },
+    "autoload": {
+        "classmap": [
+            "vendor/WpnonceOops"
+        ],
+        "psr-4": {
+            "WpnonceOops\\": "/"
+        }
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^7.5",
+        "inpsyde/php-coding-standards": "^0.13.4"
+    },
+    "scripts": {
+      "test": ["php tests/test.php"]
+    }
+}
