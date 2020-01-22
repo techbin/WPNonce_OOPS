@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit bootstrap="WpnonceOops/bootstrap.php"
+	backupGlobals="false"
+	colors="true"
+	convertErrorsToExceptions="true"
+	convertNoticesToExceptions="true"
+	convertWarningsToExceptions="true">
+  <testsuites>
+    <testsuite name="tests">
+      <directory suffix="Test.php">WpnonceOops</directory>
+    </testsuite>
+  </testsuites>
+</phpunit>

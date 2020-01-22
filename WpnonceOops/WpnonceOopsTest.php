@@ -2,41 +2,61 @@
 declare(strict_types=1);
 
 namespace WpnonceOops;
+use Brain\Monkey;
+use Brain\Monkey\Functions;
 use PHPUnit\Framework\TestCase;
-//change the path
-require('../../wp-blog-header.php');
 
-final class WpnonceOopsTest extends TestCase  
+final class WpnonceOopsTest extends WpnonceOopsTestCase  
 {
 	/**
-	 * Function to Verify Nonce URL 
+	 * Function to test Nonce  
 	 *
 	 * @param void
 	 * @return null
 	 */
-	public function testVerifyNonceURL() 
-	{
+	public function testNonce() 
+	{	
 		$wn = new WpnonceOops;
-		$action = 'url-post';
-		$field = 'form_generate_nonce';
-		$nonce = $wn->generateNonce($action);
-		$actionurl = 'test.php?';
-		$url = $wn->createNonceUrl( $actionurl, $action, '_wpnonce' );
-		$this->assertEquals( $url, 'test.php?_wpnonce='.$nonce, 'Nounce URL verified succesfully' );
+
+		$action = 'verify_nonce';
+		$nonce = 'wpnonce_oops';
+		$nonce_value = 'wpnonce_oops';
+
+		\Brain\Monkey\Functions\expect('wp_create_nonce')
+		  ->with( $action )
+		  ->andReturn( $nonce_value );
+
+		$this->assertSame( $nonce_value, $nonce );	
 	}
+
 	/**
-	 * Function to Verify Nonce Field
+	 * Function to Verify Nonce 
 	 *
 	 * @param void
 	 * @return null
 	 */
-	public function testVerifyNonceField() 
+	public function testVerifyNonce() 
 	{
 		$wn = new WpnonceOops;
+		
 		$action = 'create-post';
-		$fieldname = 'form_generate_nonce';
-		$nonce = $wn->generateNonce($action);
-		$verify_nonce =  $wn->verifyNonce( $nonce, $action);
+		$nonce = 'nonce';
+		$nonce_value = 'nonce';
+
+		\Brain\Monkey\Functions\expect('wp_create_nonce')
+		  ->with( $action )
+		  ->andReturn( $nonce_value );
+		
+		$this->assertSame( $nonce_value, $nonce );	
+
+		$verify_nonce = '1';
+
+		\Brain\Monkey\Functions\expect('wp_verify_nonce')
+		  ->with( $nonce )
+		  ->with( $action )
+		  ->andReturn( $verify_nonce );
+		
+		//var_dump($verify_nonce);
 		if($verify_nonce == 1)
 		{
 			$this->assertTrue(true, 'Nonce is less than 12 hours old - Field verified succesfully.');
@@ -50,4 +70,34 @@ final class WpnonceOopsTest extends TestCase
 			$this->markTestIncomplete( 'Nonce is invalid.' );
 		}
 	}
+
+	/**
+	 * Function to Verify Nonce URL 
+	 *
+	 * @param void
+	 * @return null
+	 */
+	public function testVerifyNonceURL() 
+	{
+		$wn = new WpnonceOops;
+
+		$action = 'url-post';
+		$nonce = 'nonce';
+		$nonce_value = 'nonce';
+
+		\Brain\Monkey\Functions\expect('wp_create_nonce')
+		  ->with( $action )
+		  ->andReturn( $nonce_value );
+		$this->assertSame( $nonce_value, $nonce );	
+
+		$url_value = 'test.php?_wpnonce='.$nonce;
+		\Brain\Monkey\Functions\expect('wp_nonce_url')
+		  ->with( 'test.php?' )
+		  ->with( $action )
+		  ->with( '_wpnonce' )
+		  ->andReturn( $url_value );
+
+		$this->assertEquals( $url_value, 'test.php?_wpnonce='.$nonce, 'Nounce URL verified succesfully' );
+	}
+	
 }
