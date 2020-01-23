@@ -1,5 +1,5 @@
 {
-    "name": "SKumar/WpnonceOops",
+    "name": "skumar/wpnonce_oops",
     "description": "Wordpress nonce functions implemented in object oriented way",
     "type": "library",
     "license": "GPL-2.0+",
